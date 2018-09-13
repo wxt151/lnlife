@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-# 城市商品管理
+商品管理/城市商品管理
 '''
 
 import time
@@ -11,22 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
-from admin.login import logInOut
-browser = logInOut.browser
-admin = logInOut.LogIn()
-admin.login()
-
-def open_cityController():
-    #点击商品管理
-    browser.implicitly_wait(5)
-    WebDriverWait(browser, 4).until(EC.presence_of_element_located((By.LINK_TEXT, u"商品管理")))
-    browser.find_element_by_link_text("商品管理").click()  # 通过link文字精确定位元素
-    time.sleep(1)
-    # 展开城市商品管理
-    locator = (By.LINK_TEXT, "城市商品管理")
-    WebDriverWait(browser, 4).until(EC.visibility_of_element_located(locator))
-    treeview_city_goods = browser.find_element_by_link_text("城市商品管理")
-    ActionChains(browser).double_click(treeview_city_goods).perform()
+from admin.modules.comOperation import ComOperation,browser
 
 def select_city():
     # 选择城市
@@ -81,7 +66,7 @@ def first_shelf():
             #判断是否弹出自定义对话框
             locator = (By.CSS_SELECTOR, ".sweet-alert.showSweetAlert.visible")
             isEverSale = EC.visibility_of_element_located(locator)
-            if isEverSale == False:
+            if isEverSale is False:
                 #输入的商品第一次上架，没有弹窗直接设置
                 set_goodsInfo()
             else:
@@ -247,8 +232,8 @@ def get_dataTables_info():
 
 
 if __name__ == "__main__":
-    pass
-    open_cityController()
+    cityGoodsInst = ComOperation()
+    cityGoodsInst.openPages(first_level="商品管理", second_level="城市商品管理")
     # select_city()
     #search_setting()
     #first_shelf()

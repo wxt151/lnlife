@@ -109,26 +109,50 @@ if __name__ == '__main__':
     print(db)
 
     py = PyMysqls()
-    py.connects_cureors(host=db["host"],port=int(db["port"]),user=db["user"],passwd=db["passwd"],
-                        db=db["db"],charset=db["charset"])
+    # py.connects_cureors(host=db["host"],port=int(db["port"]),user=db["user"],passwd=db["passwd"],
+    #                     db=db["db"],charset=db["charset"])
 
 
-    # py.connects_cureors(host="192.168.10.203",port=3306,user="root",passwd="123456",
-    #                     db="lnlife_20180701",charset="utf8")
+    py.connects_cureors(host="192.168.10.203",port=3306,user="root",passwd="123456",
+                        db="lnlife_20180909",charset="utf8")
     # py.connects_cureors(host)
     sql = """
-    SELECT * FROM lnsm_city_goods WHERE city = 450100;
+ SELECT
+	og.goods_id,SUM(og.goods_quantity * og.spec_quantity) `use`
+FROM
+ lnsm_order_goods og
+INNER JOIN (
+ SELECT
+   o.buyer_id,max(o.id) AS id
+ FROM
+  lnsm_order o
+ RIGHT JOIN lnsm_order_goods og ON og.order_id = o.id
+ RIGHT JOIN lnsm_goods g ON g.id = og.goods_id
+ RIGHT JOIN lnsm_supplier_goods AS sg ON sg.goods_id = g.id
+ WHERE
+  o. STATUS = 70
+ AND o.add_time > UNIX_TIMESTAMP(DATE_SUB(curdate(), INTERVAL 1 YEAR))
+ -- AND g.deposit = 2
+ -- AND g.type = 1
+ GROUP BY
+  o.buyer_id
+) t1 ON t1.id = og.order_id -- 
+LEFT JOIN lnsm_goods g ON g.id = og.goods_id
+WHERE
+ g.deposit = 2
+AND
+ g.type = 1
+GROUP BY
+ og.goods_id
+ORDER BY og.goods_id DESC;
     """
     results = py.select_all(sql)
-    # results = py.select_one(sql)
     print(results)
     # 数据转换成矩阵
     pan = PANDASDATA(results)
     # 默认列名字典顺序,设置自己的排序列表
-    columns = ['id', 'goods_id', 'city', 'price','retail_price',
-               'promote_price','sort','status','new_user_preferences',
-               'update_time','add_time']
+    columns = ['goods_id', 'use']
     df = pan.dataFrame(columns=columns)
-    df.to_excel(r"E:\wxt\自动化测试资料\Python\Python 编程\pyMysql\0730-1.xlsx",index=False,encoding="utf-8",columns=columns)
-    # print(df)
+    df.to_excel(r"E:\wxt\测试相关\测试用例\201809\0928空桶-1.xlsx",index=False,encoding="utf-8",columns=columns)
+    print(df)
 

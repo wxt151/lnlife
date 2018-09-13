@@ -4,6 +4,20 @@
 """
 
 from selenium import webdriver
+
+# 解决弹窗请安装Flash的问题
+from selenium import webdriver
+# 设置selenium 自动加载flash  https://blog.csdn.net/weixin_41607151/article/details/80486964
+from selenium.webdriver.chrome.options import Options
+chromeOptions = Options()
+prefs = {
+    "profile.managed_default_content_settings.images":1,
+    "profile.content_settings.plugin_whitelist.adobe-flash-player":1,
+    "profile.content_settings.exceptions.plugins.*,*.per_resource.adobe-flash-player":1,
+}
+chromeOptions.add_experimental_option('prefs',prefs)
+# driver = webdriver.Chrome(chrome_options=chromeOptions)
+
 """
 方法1,实现__new__方法  
 并在将一个类的实例绑定到类变量_instance上,  
@@ -32,12 +46,11 @@ class BrowserObj(SingleTon):
 
     def open_browser(self):
         # 创建浏览器对象
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Chrome(chrome_options=chromeOptions)
         self.browser.maximize_window()
         self.browser.get(self.url)
         # 等待网页加载，加载时间为10s，加载完就跳过
-        self.browser.implicitly_wait(10)
-        print(self.url, 'open_browser')
+        self.browser.implicitly_wait(3)
         return self.browser
 
     #   设置手机模式

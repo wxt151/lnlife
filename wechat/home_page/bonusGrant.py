@@ -3,9 +3,7 @@
 # 微信端-首页商品相关操作
 '''
 
-
 import time
-# from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,7 +14,6 @@ from selenium.webdriver.support.ui import Select
 from common.browser import BrowserObj
 from common.Logger import Log
 
-# from common.openpyxlExcel import READEXCEL
 import numpy as np
 import common.openpyxlExcel as ope
 

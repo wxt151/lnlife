@@ -18,7 +18,6 @@ class LogIn(object):
         try:
             ele_user = browser.find_element_by_name("username")
             ele_user.clear()
-            print("ele_user", ele_user)
             ele_user.send_keys(self.username)
             ele_pwd = browser.find_element_by_name("password")
             ele_pwd.clear()

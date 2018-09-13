@@ -10,27 +10,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
-from admin.login import logInOut
-
-browser = logInOut.browser
+from admin.modules.comOperation import ComOperation,browser
 
 class GroupBuy(object):
-    def admin_login(self):
-        admin = logInOut.LogIn()
-        admin.login()
-
-    def open_groupBuy(self):
-        #点击推广管理
-        browser.implicitly_wait(5)
-        WebDriverWait(browser, 4).until(EC.presence_of_element_located((By.LINK_TEXT, u"推广管理")))
-        browser.find_element_by_link_text("推广管理").click()  # 通过link文字精确定位元素
-        time.sleep(1)
-        # 双击展开团购活动
-        locator = (By.LINK_TEXT, "团购活动")
-        WebDriverWait(browser, 4).until(EC.visibility_of_element_located(locator))
-        treeview_city_goods = browser.find_element_by_link_text("团购活动")
-        ActionChains(browser).double_click(treeview_city_goods).perform()
-
     def add_groupBuy(self):
         # 点击添加团购
         add_btn = ".btn.btn-default.btn-sm.modal-btn"
@@ -101,9 +83,9 @@ class GroupBuy(object):
 
 
 if __name__ == "__main__":
-    groupbuy  = GroupBuy()
-    groupbuy.admin_login()
-    groupbuy.open_groupBuy()
+    grouBuyInst = ComOperation()
+    grouBuyInst.openPages(first_level="推广管理", second_level="团购活动")
+    groupbuy = GroupBuy()
     groupbuy.add_groupBuy()
     time.sleep(2)
     browser.quit()

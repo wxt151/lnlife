@@ -11,22 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
-from admin.login import logInOut
-
-
-browser = logInOut.browser
-def open_bonusController():
-    logInOut.adminLogin()
-    #点击红包管理
-    browser.implicitly_wait(5)
-    WebDriverWait(browser, 4).until(EC.presence_of_element_located((By.LINK_TEXT, u"推广管理")))
-    browser.find_element_by_link_text("推广管理").click()  # 通过link文字精确定位元素
-    time.sleep(1)
-    # 展开红包管理
-    locator = (By.LINK_TEXT, "红包管理")
-    WebDriverWait(browser, 4).until(EC.visibility_of_element_located(locator))
-    treeview_city_goods = browser.find_element_by_link_text("红包管理")
-    ActionChains(browser).double_click(treeview_city_goods).perform()
+from admin.modules.comOperation import ComOperation,browser
 
 def switch_bonusSendRecord():
     # 选择红包发放记录
@@ -140,7 +125,8 @@ def get_dataTables_info():
 
 
 if __name__ == "__main__":
-    open_bonusController()
+    bonusSendInst = ComOperation()
+    bonusSendInst.openPages(first_level="推广管理", second_level="红包管理")
     #disable_bonus(False)
     #operation_record()
     export_excel()
