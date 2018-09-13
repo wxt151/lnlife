@@ -5,7 +5,7 @@ from selenium import webdriver
 import time
 from common.browser import BrowserObj
 
-url = "http://admin6.t-lianni.com/"
+url = "http://admin5.t-lianni.com/"
 driver = BrowserObj(url)
 browser = driver.open_browser()
 
