@@ -11,7 +11,28 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
+<<<<<<< HEAD
 from admin.modules.comOperation import ComOperation,browser
+=======
+
+from admin.login import logInOut
+browser = logInOut.browser
+admin = logInOut.LogIn()
+admin.login()
+
+def open_goods():
+    #点击商品管理
+    browser.implicitly_wait(5)
+    WebDriverWait(browser, 4).until(EC.presence_of_element_located((By.LINK_TEXT, u"商品管理")))
+    browser.find_element_by_link_text("商品管理").click()  # 通过link文字精确定位元素
+    time.sleep(1)
+    # 展开商品库管理
+    locator = (By.LINK_TEXT, "商品库管理")
+    WebDriverWait(browser, 4).until(EC.visibility_of_element_located(locator))
+    treeview_city_goods = browser.find_element_by_link_text("商品库管理")
+    ActionChains(browser).double_click(treeview_city_goods).perform()
+
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
 
 def search_setting():
     time.sleep(2)
@@ -34,9 +55,15 @@ def add_goods():
     # WebDriverWait(browser,5).until(EC.visibility_of_element_located(locator))
     time.sleep(2)
 
+<<<<<<< HEAD
     Select(browser.find_element_by_name("second_cid")).select_by_visible_text("瓶装水")
     Select(browser.find_element_by_name("goods_brands_id")).select_by_visible_text("百崖禄桂")
     browser.find_element_by_id("goodsname").send_keys("百崖禄桂桶装水18L-tz")
+=======
+    Select(browser.find_element_by_name("second_cid")).select_by_visible_text("桶装水")
+    Select(browser.find_element_by_name("goods_brands_id")).select_by_visible_text("百崖禄桂")
+    browser.find_element_by_id("goodsname").send_keys("百崖禄桂桶装水18L-1")
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
     # 默认是免桶押金
     browser.find_element_by_css_selector("input[value='2']").click()
 
@@ -50,6 +77,7 @@ def add_goods():
     os.system("upfile.exe")
 
     # 向富文本编辑器输入内容 https://blog.csdn.net/ever_mwumli/article/details/77945844
+<<<<<<< HEAD
     # 首先定位到最外面的 iframe 框架：
     iframe = browser.find_element_by_css_selector("iframe.ke-edit-iframe")
     # 进入 iframe 框架
@@ -57,6 +85,16 @@ def add_goods():
     # 定位输入框写入内容
     browser.find_element_by_css_selector("body.ke-content").send_keys("新品上市")
     # 退出 iframe 框架
+=======
+    """
+    首先定位到最外面的 iframe 框架:
+    进入 iframe 框架：
+    定位输入框写入内容：
+    """
+    iframe =  browser.find_element_by_css_selector("iframe.ke-edit-iframe")
+    browser.switch_to_frame(iframe)
+    browser.find_element_by_css_selector("body.ke-content").send_keys("新品上市")
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
     browser.switch_to_default_content()
     # 点击提交后，有可能弹窗提示成功
     time.sleep(15)
@@ -66,7 +104,11 @@ def add_goods():
     updategoods.click()
     print("*****")
 
+<<<<<<< HEAD
     close_ok_window()
+=======
+    # close_ok_window()
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
 
 def close_ok_window():
     time.sleep(0.5)
@@ -152,10 +194,18 @@ def get_dataTables_info():
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     publishgoodsInst = ComOperation()
     publishgoodsInst.openPages(first_level="商品管理", second_level="商品库管理")
+=======
+    open_goods()
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
     # search_setting()
     # add_goods()
     # see_logs()
     # export_excel()
+<<<<<<< HEAD
     # get_dataTables_info()
+=======
+    get_dataTables_info()
+>>>>>>> ebc77e2de5fbb013311ffbcc07d1e071daa9c8a8
