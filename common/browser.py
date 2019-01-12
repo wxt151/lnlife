@@ -49,7 +49,7 @@ class BrowserObj(SingleTon):
         self.browser = webdriver.Chrome(chrome_options=chromeOptions)
         self.browser.maximize_window()
         self.browser.get(self.url)
-        # 等待网页加载，加载时间为10s，加载完就跳过
+        # 等待网页加载，加载时间为10s，加载完就跳过，隐性等待这个时间如果最长，系统会选择这个最长时间作为超时时间
         self.browser.implicitly_wait(3)
         return self.browser
 
@@ -57,15 +57,17 @@ class BrowserObj(SingleTon):
     def mobile_phone_mode(self):
         try:
             from selenium.webdriver.chrome.options import Options
-            # 有效的移动设备Galaxy S5,Nexus 5X,iPhone 8
+            # 用chrome的Mobile emulation模拟手机浏览器测试手机网页
+            # https://blog.csdn.net/huilan_same/article/details/52856200
 
+            # 第一种方法：device name来确定我们要模拟的手机样式
             # mobile_emulation = {"deviceName": "iPhone 7"}
 
+            # 第二种方法：直接指定分辨率以及UA标识
             mobile_emulation = {
                 "deviceMetrics": {"width": 360, "height": 640, "pixelRatio": 3.0},
                 "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1"}
 
-            # mobile_emulation = {"browserName": "IE"}
             options = Options()
             options.add_experimental_option("mobileEmulation", mobile_emulation)
             return options
@@ -74,15 +76,6 @@ class BrowserObj(SingleTon):
             # self.writeLog('mobile_phone_mode')
 
 if __name__ == "__main__":
-    url = "http://admin6.t-lianni.com"
-    browser = BrowserObj(url).open_browser()
-    ele_user = browser.find_element_by_name("username")
-    ele_user.clear()
-    print("ele_user", ele_user)
-    ele_user.send_keys("admin")
-    ele_pwd = browser.find_element_by_name("password")
-    ele_pwd.clear()
-    ele_pwd.send_keys("123456")
-    ele_login = browser.find_element_by_id("loginBtn")
-    ele_login.click()
-    
+    url = "http://wechat7.t-lianni.com/"
+    browser = BrowserObj(url)
+    browser.mobile_phone_mode()
